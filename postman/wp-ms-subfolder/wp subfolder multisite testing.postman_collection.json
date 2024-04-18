@@ -1,0 +1,1544 @@
+{
+	"info": {
+		"_postman_id": "8c0d2aa6-bbe6-44f8-a316-1081cdeaeea0",
+		"name": "Integration testing",
+		"description": "# ⛓️ Get started here\n\nPostman allows you to test your APIs using simple Javascript code. You can evaluate your response body, headers, cookies, and more using the [ChaiJS BDD](https://www.chaijs.com/api/bdd/) syntax.\n\nThis template guides you through the process of setting up an integration test to ensure that all individual components of an API function together seamlessly.\n\nThe API under test in this collection includes three endpoints for registering and receiving a token, accessing your unique generated name, and unregistering a token:\n\n- POST `/register`\n- POST `/unregister`\n- GET `/my-name`\n    \n\nBy setting up requests in the order of the operation, we can test the flow of data to and from the endpoints and ensure they work together as expected. We also verify that the data persists between requests on the back end.\n\n## 🔖 **How to use this template**\n\n**Step 1:** Check out the requests' documentation to learn more about -\n\n- what each request is meant to do.\n- the tests we've added against each one.\n    \n\n**Step 2:** Run this collection by clicking on \"Run\".\n\n<img src=\"https://content.pstmn.io/84019b0f-69c8-4c5f-98b9-2c90a6f9a0b1/Y29sbGVjdGlvbi1ydW5uZXItYnV0dG9uLmpwZWc=\" alt=\"\" height=\"103\" width=\"266\">\n\n**Step 3:** To customize this template, replace the request URLs with your API endpoints and add or edit the tests if needed.\n\n## ℹ️ Resources\n\n[Scripting in Postman](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)\n\n[Test script examples](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)\n\n[Postman Sandbox API reference](https://learning.postman.com/docs/sending-requests/grpc/postman-sandbox-api/#writing-assertions)\n\n[Using the Collection Runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29560241"
+	},
+	"item": [
+		{
+			"name": "try to access anything htaccess",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/.htaccess",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						".htaccess"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth Homepage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth Homepage at index.php",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/index.php",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"index.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth Subsite 1 Homepage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const link = '<a href=\"http://localhost/subsite-1\" target=\"_self\" rel=\"home\" aria-current=\"page\">subsite-1</a>';",
+							"const blogpost_link ='<a href=\"http://localhost/subsite-1/2023/12/14/this-is-a-new-post-on-subsite-1-only/\" target=\"_self\" >This is a new post on subsite 1 only</a>';",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Has correct main navigation button\", function () {",
+							"    pm.expect(pm.response.text()).to.include(link);",
+							"});",
+							"",
+							"pm.test(\"Lists correct blog post\", function () {",
+							"    pm.expect(pm.response.text()).to.include(blogpost_link);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/subsite-1/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subsite-1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth Subsite 1 Blog post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const link = '<a href=\"http://localhost/subsite-1\" target=\"_self\" rel=\"home\">subsite-1</a>';",
+							"const blogpost_content ='<p>boop</p>';",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Has correct main navigation button\", function () {",
+							"    pm.expect(pm.response.text()).to.include(link);",
+							"});",
+							"",
+							"pm.test(\"Has correct post body\", function () {",
+							"    pm.expect(pm.response.text()).to.include(blogpost_content);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/subsite-1/2023/12/14/this-is-a-new-post-on-subsite-1-only/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subsite-1",
+						"2023",
+						"12",
+						"14",
+						"this-is-a-new-post-on-subsite-1-only",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth root wp-admin login page",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth CSS from subsite",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/subsite-1/wp-includes/blocks/navigation/style.min.css?ver=6.4.3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subsite-1",
+						"wp-includes",
+						"blocks",
+						"navigation",
+						"style.min.css"
+					],
+					"query": [
+						{
+							"key": "ver",
+							"value": "6.4.3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth JS from subsite",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/subsite-1/wp-includes/blocks/navigation/view.min.js?ver=e3d6f3216904b5b42831",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subsite-1",
+						"wp-includes",
+						"blocks",
+						"navigation",
+						"view.min.js"
+					],
+					"query": [
+						{
+							"key": "ver",
+							"value": "e3d6f3216904b5b42831"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth CSS from main site",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-includes/blocks/navigation/style.min.css?ver=6.4.3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-includes",
+						"blocks",
+						"navigation",
+						"style.min.css"
+					],
+					"query": [
+						{
+							"key": "ver",
+							"value": "6.4.3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth CSS using load-styles.php",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin/load-styles.php?c=1&dir=ltr&load%5Bchunk_0%5D=dashicons,admin-bar,site-health,common,forms,admin-menu,dashboard,list-tables,edit,revisions,media,themes,about,nav-menus,wp-poi&load%5Bchunk_1%5D=nter,widgets,site-icon,l10n,buttons,wp-auth-check&ver=6.4.3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin",
+						"load-styles.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "1"
+						},
+						{
+							"key": "dir",
+							"value": "ltr"
+						},
+						{
+							"key": "load%5Bchunk_0%5D",
+							"value": "dashicons,admin-bar,site-health,common,forms,admin-menu,dashboard,list-tables,edit,revisions,media,themes,about,nav-menus,wp-poi"
+						},
+						{
+							"key": "load%5Bchunk_1%5D",
+							"value": "nter,widgets,site-icon,l10n,buttons,wp-auth-check"
+						},
+						{
+							"key": "ver",
+							"value": "6.4.3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth Subsite CSS using load-styles.php",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/subsite-1/wp-admin/load-styles.php?c=1&dir=ltr&load%5Bchunk_0%5D=dashicons,admin-bar,site-health,common,forms,admin-menu,dashboard,list-tables,edit,revisions,media,themes,about,nav-menus,wp-poi&load%5Bchunk_1%5D=nter,widgets,site-icon,l10n,buttons,wp-auth-check&ver=6.4.3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subsite-1",
+						"wp-admin",
+						"load-styles.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "1"
+						},
+						{
+							"key": "dir",
+							"value": "ltr"
+						},
+						{
+							"key": "load%5Bchunk_0%5D",
+							"value": "dashicons,admin-bar,site-health,common,forms,admin-menu,dashboard,list-tables,edit,revisions,media,themes,about,nav-menus,wp-poi"
+						},
+						{
+							"key": "load%5Bchunk_1%5D",
+							"value": "nter,widgets,site-icon,l10n,buttons,wp-auth-check"
+						},
+						{
+							"key": "ver",
+							"value": "6.4.3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth JS from main site",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/subsite-1/wp-includes/blocks/navigation/view.min.js?ver=e3d6f3216904b5b42831",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subsite-1",
+						"wp-includes",
+						"blocks",
+						"navigation",
+						"view.min.js"
+					],
+					"query": [
+						{
+							"key": "ver",
+							"value": "e3d6f3216904b5b42831"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth JS using load-scripts.php",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin/load-scripts.php?c=1&load%5Bchunk_0%5D=jquery-core,jquery-migrate,utils&ver=6.4.3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin",
+						"load-scripts.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "1"
+						},
+						{
+							"key": "load%5Bchunk_0%5D",
+							"value": "jquery-core,jquery-migrate,utils"
+						},
+						{
+							"key": "ver",
+							"value": "6.4.3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth Subsite JS using load-scripts.php",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/subsite-1/wp-admin/load-scripts.php?c=1&load%5Bchunk_0%5D=jquery-core,jquery-migrate,utils&ver=6.4.3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subsite-1",
+						"wp-admin",
+						"load-scripts.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "1"
+						},
+						{
+							"key": "load%5Bchunk_0%5D",
+							"value": "jquery-core,jquery-migrate,utils"
+						},
+						{
+							"key": "ver",
+							"value": "6.4.3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No-Auth image from main site",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/subsite-1/wp-content/themes/twentytwentyfour/assets/images/building-exterior.webp",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subsite-1",
+						"wp-content",
+						"themes",
+						"twentytwentyfour",
+						"assets",
+						"images",
+						"building-exterior.webp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log in page from subsite",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const subsite_login_form = '<form name=\"loginform\" id=\"loginform\" action=\"http://localhost/subsite-1/wp-login.php\" method=\"post\">';",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test (\"Has login form\", function() {",
+							"    pm.expect(pm.response.text()).to.include(subsite_login_form);",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/subsite-1/wp-login.php",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subsite-1",
+						"wp-login.php"
+					]
+				},
+				"description": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection."
+			},
+			"response": []
+		},
+		{
+			"name": "Log in page from main site",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"const main_login_form = '<form name=\"loginform\" id=\"loginform\" action=\"http://localhost/wp-login.php\" method=\"post\">';",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Has main site login form\", function () {",
+							"    pm.expect(pm.response.text()).to.include(main_login_form);",
+							"});",
+							"",
+							"const $ = cheerio.load(pm.response.text());",
+							"const form = $(\"#loginform\");",
+							"// console.log(form.find('input'));",
+							"",
+							"const inputs = form.find('input');",
+							"// console.log(typeof inputs, inputs);",
+							"",
+							"console.log(pm.request.url.query.all());",
+							"",
+							"inputs.each(function(i, el) {",
+							"    if (el.attribs.name ===\"redirect_to\") {",
+							"        pm.collectionVariables.set(\"variable_key\", \"variable_value\");",
+							"    }",
+							"    console.log(el.attribs.type, el.attribs.name);",
+							"})",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin"
+					]
+				},
+				"description": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection."
+			},
+			"response": []
+		},
+		{
+			"name": "Actually log into WordPress",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "log",
+							"value": "javorszky",
+							"type": "text"
+						},
+						{
+							"key": "pwd",
+							"value": "einstein",
+							"type": "text"
+						},
+						{
+							"key": "rememberme",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "redirect_to",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wp-login.php",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-login.php"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authed admin area",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authed Site health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const title = `<h1>",
+							"\t\t\tSite Health\t\t</h1>`;",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(title);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin/site-health.php?tab",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin",
+						"site-health.php"
+					],
+					"query": [
+						{
+							"key": "tab",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authed admin styles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin/load-styles.php?c=1&dir=ltr&load%5Bchunk_0%5D=dashicons,admin-bar,site-health,common,forms,admin-menu,dashboard,list-tables,edit,revisions,media,themes,about,nav-menus,wp-poi&load%5Bchunk_1%5D=nter,widgets,site-icon,l10n,buttons,wp-auth-check&ver=6.4.3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin",
+						"load-styles.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "1"
+						},
+						{
+							"key": "dir",
+							"value": "ltr"
+						},
+						{
+							"key": "load%5Bchunk_0%5D",
+							"value": "dashicons,admin-bar,site-health,common,forms,admin-menu,dashboard,list-tables,edit,revisions,media,themes,about,nav-menus,wp-poi"
+						},
+						{
+							"key": "load%5Bchunk_1%5D",
+							"value": "nter,widgets,site-icon,l10n,buttons,wp-auth-check"
+						},
+						{
+							"key": "ver",
+							"value": "6.4.3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authed admin scripts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin/load-scripts.php?c=1&load%5Bchunk_0%5D=hoverIntent,wp-polyfill-inert,regenerator-runtime,wp-polyfill,wp-hooks&ver=6.4.3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin",
+						"load-scripts.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "1"
+						},
+						{
+							"key": "load%5Bchunk_0%5D",
+							"value": "hoverIntent,wp-polyfill-inert,regenerator-runtime,wp-polyfill,wp-hooks"
+						},
+						{
+							"key": "ver",
+							"value": "6.4.3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authed Posts page",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const blog_title = 'This is a Rolex appreciation post';",
+							"",
+							"pm.test(\"Posts page lists blog post\", function () {",
+							"    pm.expect(pm.response.text()).to.include(blog_title);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin/edit.php",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin",
+						"edit.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authed New posts page",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const blog_title = 'Add a New Post';",
+							"",
+							"pm.test(\"Posts page lists blog post\", function () {",
+							"    pm.expect(pm.response.text()).to.include(blog_title);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin/post-new.php",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin",
+						"post-new.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authed Network Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const network_status = 'You have 2 sites and 1 user.';",
+							"",
+							"pm.test(\"Network status\", function () {",
+							"    pm.expect(pm.response.text()).to.include(network_status);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin/network/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin",
+						"network",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authed Network Admin index.php",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const network_status = 'You have 2 sites and 1 user.';",
+							"",
+							"pm.test(\"Network status\", function () {",
+							"    pm.expect(pm.response.text()).to.include(network_status);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin/network/index.php",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin",
+						"network",
+						"index.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authed Network setup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const config_steps = 'The original configuration steps are shown here for reference.';",
+							"",
+							"pm.test(\"Network status\", function () {",
+							"    pm.expect(pm.response.text()).to.include(config_steps);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-admin/network.php",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-admin",
+						"network.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authed Subsite-1 Dashboard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const config_steps = 'The original configuration steps are shown here for reference.';",
+							"const blog_title = 'This is a new post on subsite 1 only';",
+							"",
+							"pm.test(\"Has blog title\", function () {",
+							"    pm.expect(pm.response.text()).to.include(blog_title);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/subsite-1/wp-admin/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subsite-1",
+						"wp-admin",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API Create a new post",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let title = pm.variables.replaceIn(\"{{$randomCatchPhrase}}\");",
+							"pm.collectionVariables.set(\"title\", title);",
+							"",
+							"let content = pm.variables.replaceIn(\"<!-- wp:paragraph -->\\\\n<p>{{$randomLoremParagraph}}</p>\\\\n<!-- /wp:paragraph -->\");",
+							"pm.collectionVariables.set(\"content\", content);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Has correct json response shape\", function () {",
+							"    var jsonData = pm.response.json();",
+							"",
+							"    let content = jsonData.content.raw.replace(/\\n/g, '');",
+							"    let expected = pm.collectionVariables.get(\"content\").replace(/\\n/g, '').replace(/\\\\n/g, '');",
+							"",
+							"    pm.expect(jsonData.title.raw).to.equal(pm.collectionVariables.get(\"title\"));",
+							"    pm.expect(content).to.eq(expected);",
+							"",
+							"    // Set the postID variable here so we can delete the post we've just created so we don't clutter things. ",
+							"    pm.collectionVariables.set(\"postID\", jsonData.id);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{applicationPassword}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "javorszky",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-WP-Nonce",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"publish\",\n    \"title\": \"{{title}}\",\n    \"comment_status\": \"closed\",\n    \"format\": \"standard\",\n    \"content\": \"{{content}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wp-json/wp/v2/posts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-json",
+						"wp",
+						"v2",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API Delete created post",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Has correct json response shape\", function () {",
+							"    var jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData.status).to.eq(\"trash\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{applicationPassword}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "javorszky",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-WP-Nonce",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"publish\",\n    \"title\": \"{{title}}\",\n    \"comment_status\": \"closed\",\n    \"format\": \"standard\",\n    \"content\": \"{{content}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wp-json/wp/v2/posts/{{postID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-json",
+						"wp",
+						"v2",
+						"posts",
+						"{{postID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API Get User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"content\", \"<!-- wp:paragraph -->\\\\n<p>\" + pm.$randomLoremParagraph + \"</p>\\\\n<!-- /wp:paragraph -->\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableCookies": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{applicationPassword}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "javorszky",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wp-json/wp/v2/users?context=edit",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wp-json",
+						"wp",
+						"v2",
+						"users"
+					],
+					"query": [
+						{
+							"key": "context",
+							"value": "edit"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "http://localhost"
+		},
+		{
+			"key": "loginCSRF",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "redirect_to",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "content",
+			"value": ""
+		},
+		{
+			"key": "applicationPassword",
+			"value": "CTFg 8hCe qzV1 PUki qRoa a68U",
+			"type": "string"
+		},
+		{
+			"key": "title",
+			"value": ""
+		},
+		{
+			"key": "postID",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
