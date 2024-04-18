@@ -1,4 +1,4 @@
-.PHONY: run-wp-ms-subfolder
+.PHONY: test-ms-subfolder
 
-run-wp-ms-subfolder:
-	newman run postman/wp-ms-subfolder/wp\ subfolder\ multisite\ testing.postman_collection.json
+test-ms-subfolder:
+	newman run cases/ms-subfolder/wp\ subfolder\ multisite\ testing.postman_collection.json
