@@ -782,12 +782,12 @@
 					"formdata": [
 						{
 							"key": "log",
-							"value": "javorszky",
+							"value": "drfreeman",
 							"type": "text"
 						},
 						{
 							"key": "pwd",
-							"value": "einstein",
+							"value": "blackmesa24",
 							"type": "text"
 						},
 						{
@@ -1290,7 +1290,7 @@
 						},
 						{
 							"key": "username",
-							"value": "javorszky",
+							"value": "drfreeman",
 							"type": "string"
 						}
 					]
@@ -1375,7 +1375,7 @@
 						},
 						{
 							"key": "username",
-							"value": "javorszky",
+							"value": "drfreeman",
 							"type": "string"
 						}
 					]
@@ -1454,7 +1454,7 @@
 						},
 						{
 							"key": "username",
-							"value": "javorszky",
+							"value": "drfreeman",
 							"type": "string"
 						}
 					]

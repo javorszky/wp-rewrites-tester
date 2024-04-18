@@ -1,0 +1,124 @@
+{
+    "settings": {
+        "http": {
+            "log_route": true
+        }
+    },
+    "listeners": {
+        "*:80": {
+            "pass": "routes"
+        },
+        "*:443": {
+            "pass": "routes"
+        }
+    },
+    "routes": [
+        {
+            "match": {
+                "uri": [
+                    "*.ht*"
+                ]
+            },
+            "action": {
+                "return": 404
+            }
+        },
+        {
+            "match": {
+                "uri": [
+                    "index.php"
+                ]
+            },
+            "action": {
+                "pass": "applications/wordpress/index"
+            }
+        },
+        {
+            "match": {
+                "uri": [
+                    "*/wp-admin"
+                ]
+            },
+            "action": {
+                "rewrite": "$uri/",
+                "pass": "routes"
+            }
+        },
+        {
+            "match": {
+                "uri": [
+                    "~([_0-9a-zA-Z-]+\\/)(wp-(admin|includes|content)/\\.*)"
+                ]
+            },
+            "action": {
+                "rewrite": "`${uri.replace(/([_0-9a-zA-Z-]+\\/)(wp-(admin|includes|content)\\/\\.*)/, '$2')}`",
+                "pass": "routes"
+            }
+        },
+        {
+            "match": {
+                "uri": [
+                    "~([_0-9a-zA-Z-]+\\/)(wp-login\\.php.*)"
+                ]
+            },
+            "action": {
+                "rewrite": "`${uri.replace(/([_0-9a-zA-Z-]+\\/)(wp-login\\.php.*)/, '$2')}`",
+                "pass": "routes"
+            }
+        },
+        {
+            "match": {
+                "uri": [
+                    "*.*",
+                    "!*.php"
+                ]
+            },
+            "action": {
+                "share": "/wpms$uri",
+                "fallback": {
+                    "return": 404
+                }
+            }
+        },
+        {
+            "match": {
+                "uri": [
+                    "*.php",
+                    "*.php/*",
+                    "*/wp-admin/",
+                    "*/wp-admin/*/"
+                ]
+            },
+            "action": {
+                "pass": "applications/wordpress/direct"
+            }
+        },
+        {
+            "action": {
+                "share": "/wpms$uri",
+                "fallback": {
+                    "pass": "applications/wordpress/index"
+                }
+            }
+        }
+    ],
+    "applications": {
+        "wordpress": {
+            "type": "php",
+            "targets": {
+                "direct": {
+                    "root": "/wpms/"
+                },
+                "index": {
+                    "root": "/wpms/",
+                    "script": "index.php"
+                }
+            },
+            "processes": {
+				"idle_timeout": 30,
+				"max": 50,
+				"spare": 1
+			}
+        }
+    }
+}
