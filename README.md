@@ -8,6 +8,20 @@ This can surface issues with server configuration issues or `$_SERVER['REQUEST_U
 
 The tests are not complete, and there are a lot of caveats. I'm hoping the community would be able to provide more help with this.
 
+## How to use this
+
+First make sure you have all the prerequisites installed and available.
+
+Then after cloning this repository you'll need two terminal windows.
+
+In the first one you'll start one of the environments using one of the make targets.
+
+In the other you'll start the tests against the running WordPress instance.
+
+### Make targets
+
+1. `up-ms-subfolder-unit`: Starts WordPress running behind Unit in multisite subfolder mode. For this to be successful you need to build the images first. See the [docker/unit/](docker/unit/) folder for the makefiles.
+
 ## Prerequisites
 
 ### Locally

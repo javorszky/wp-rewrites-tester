@@ -1,6 +1,8 @@
 services:
   unit:
     image: unit:wp-ms
+    depends_on:
+      - db
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wp-tester
@@ -40,7 +42,9 @@ services:
       - tester-ms-subfolder
   
   apache:
-    image: wordpress:6.4-apache
+    image: wordpress:6.5-php8.3-apache
+    depends_on:
+      - db
     ports:
       - 80:80
     environment:
@@ -78,6 +82,57 @@ services:
     networks:
       - tester-ms-subfolder
 
+  nginx:
+    image: nginx:1.25.5
+    depends_on:
+      - wp_fpm
+    ports:
+      - 80:80
+    volumes:
+      - wordpress:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+    networks:
+      - tester-ms-subfolder
+
+  wp_fpm:
+    image: wordpress:6.5-php8.3-fpm-alpine
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp-tester
+      WORDPRESS_DB_PASSWORD: supersecret
+      WORDPRESS_DB_NAME: ms_subfolder
+      WP_DEBUG: true
+
+      WORDPRESS_AUTH_KEY:         '=2p`pO7IF9$$O e,0M2o|W#6A|nYrnCLOLvW_2R_&p{Jpj2e9uV|M-L14%K+Z2bS#'
+      WORDPRESS_SECURE_AUTH_KEY:  '5gN||Sv-`*7B,ZCc#5F&+tVZhLK -#~RLzwKbUH>4gp^H02@f7FO2~XjydFx*(bC'
+      WORDPRESS_LOGGED_IN_KEY:    '|jxEH+8nC`ESk4Z#a^aR<|zLq~y PRy`XAS.vMwOXn/e{/q#B0>oP5Isw/zPU_+h'
+      WORDPRESS_NONCE_KEY:        '*KHo)]j0*|o9#a[5Af++]^s%i.fVHMNQ&#>#p.g}86IWW~9*g/TAKoUvYLC0Z<(3'
+      WORDPRESS_AUTH_SALT:        'vteSSZwL9nDpbnHWH&1GHHz?N]O }25Q)]@Si|olj.Fo-Ut|87v|3^>BA#^,l#rZ'
+      WORDPRESS_SECURE_AUTH_SALT: '1tv-%pN-E@eCm{L`{N{v?sZ2(0xmPh@0VY]3B+7,@H|m+W}?$$?+/-LV&!aTKsasC'
+      WORDPRESS_LOGGED_IN_SALT:   'v{3UsR9b%#^H+_}SC*BI1juvML%EQVk|mhoSL9fGDI1 iJC@[QuUtS8N$$Q#TJ6u]'
+      WORDPRESS_NONCE_SALT:       'Pk:5yJ{u@YdJN-[9^)u>QT=0nLzJY9Pz)QD!.0:^P47y|{k.5=4++L^rAUIHrCBr'
+
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_ALLOW_MULTISITE', true );
+
+        /* after installing the multisite */
+        define( 'MULTISITE', true );
+        define( 'SUBDOMAIN_INSTALL', false );
+        define( 'DOMAIN_CURRENT_SITE', 'localhost' );
+        define( 'PATH_CURRENT_SITE', '/' );
+        define( 'SITE_ID_CURRENT_SITE', 1 );
+        define( 'BLOG_ID_CURRENT_SITE', 1 ); 
+
+        define( 'WP_ENVIRONMENT_TYPE', 'local' );
+
+        define( 'WP_CACHE_KEY_SALT', 'xW-gtI&Y;:,ggy>NP4fwj-7|{VKu:M`>%7_ch~Z8D0^z<o5YpP)D$$G?W0Q ;npC_');
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - tester-ms-subfolder
+
   db:
     image: mysql:8-oracle
     command: "--authentication_policy=caching_sha2_password"
@@ -92,6 +147,9 @@ services:
       - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     networks:
       - tester-ms-subfolder
+
+volumes:
+  wordpress:
 
 networks:
   tester-ms-subfolder:
