@@ -7,7 +7,8 @@ services:
       WORDPRESS_DB_PASSWORD: supersecret
       WORDPRESS_DB_NAME: ms_subfolder
       WP_DEBUG: true
-
+      # Note that the $ are doubled up here due to docker compose variable substitution rules.
+      # See https://stackoverflow.com/a/40621373
       WORDPRESS_AUTH_KEY: "sj~{_T6E/<n=_/dB8JgE43kAJMP;j|V1/+mTH#6+%5?Uwhp|3n4t6i{V)+}d$$p.s"
       WORDPRESS_SECURE_AUTH_KEY: "AR86-$$;^V/mNIM6_=+,rZ}l >i|]Sy=DH6qu$$umLW3U4/|lJ}2 V(0S-@B;pM>e+"
       WORDPRESS_LOGGED_IN_KEY: "!-S`cx8,$$9lic%mP+nR>z7o{(Wk-gMzDi@@@w8X1Yx_72jm@$$=FJ=bRc[3PjVr|&"
