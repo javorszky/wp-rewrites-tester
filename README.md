@@ -28,6 +28,10 @@ Possibly. [Bruno](https://www.usebruno.com/) is a similar application to help ed
 
 For command line usage I've not seen anything similar to newman.
 
+### Why is there a directory with Unit source code in `docker/`?
+
+Code changes in the Unit codebase are currently in a pull request. The easiest way to build a Unit-based image with those changes present is to have a snapshot of the codebase and copy that into the dockerfile. In the future once 1.33 is released and the request URI changes are included in that release the source code directory will go away as we won't need to build a local unit image.
+
 ## Note
 
 This project was made to test a work project in NGINX. It's expected that this repository gets transferred to their Github organization in the future.
