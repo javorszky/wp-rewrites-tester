@@ -20,7 +20,11 @@ In the other you'll start the tests against the running WordPress instance.
 
 ### Make targets
 
+1. `build-unit-ms-subfolder`: Builds a docker image based on Unit 1.32 with a modified codebase based on PR 1162.
 1. `up-ms-subfolder-unit`: Starts WordPress running behind Unit in multisite subfolder mode. For this to be successful you need to build the images first. See the [docker/unit/](docker/unit/) folder for the makefiles.
+1. `up-ms-subfolder-apache`: Starts the standard WordPress Apache image.
+1. `up-ms-subfolder-nginx`: Starts an NGINX image that uses WordPress as an fpm in a separate container.
+1. `test-ms-subfolder`: Runs a postman collection using `newman` against whichever version of WordPress is running. All of them use the same database content, so the only difference in test results are due to server configuration.
 
 ## Prerequisites
 
