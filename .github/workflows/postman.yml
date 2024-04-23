@@ -3,16 +3,8 @@ name: Automated API tests using Postman CLI
 on: push
 
 jobs:
-  install-newman:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
   test-wp:
-    needs: install-newman
+    runs-on: ubuntu-latest
     name: Testing WordPress
     concurrency: ${{ matrix.wp_type }}-${{ matrix.server }}
     strategy:
@@ -21,6 +13,11 @@ jobs:
         server: [apache, nginx, unit]
     steps:
       - uses: actions/checkout@v4
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
       - name: Launching WordPress ${{ matrix.wp_type }} with ${{ matrix.server }}
         run: make up-${{ matrix.wp_type }}-${{ matrix.server }}
       - name: Running postman tests
