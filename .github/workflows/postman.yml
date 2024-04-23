@@ -21,7 +21,7 @@ jobs:
         server: [apache, nginx, unit]
     steps:
       - uses: actions/checkout@v4
-        name: Launching WordPress ${{ matrix.wp_type }} with ${{ matrix.server }}
+      - name: Launching WordPress ${{ matrix.wp_type }} with ${{ matrix.server }}
         run: make up-${{ matrix.wp_type }}-${{ matrix.server }}
       - name: Running postman tests
         run: make test-${{ matrix.wp_type }}
