@@ -3,37 +3,8 @@ services:
     image: unit:wp-ms
     depends_on:
       - db
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wp-tester
-      WORDPRESS_DB_PASSWORD: supersecret
-      WORDPRESS_DB_NAME: ms_subfolder
-      WP_DEBUG: true
-      # Note that the $ are doubled up here due to docker compose variable substitution rules.
-      # See https://stackoverflow.com/a/40621373
-      WORDPRESS_AUTH_KEY: "sj~{_T6E/<n=_/dB8JgE43kAJMP;j|V1/+mTH#6+%5?Uwhp|3n4t6i{V)+}d$$p.s"
-      WORDPRESS_SECURE_AUTH_KEY: "AR86-$$;^V/mNIM6_=+,rZ}l >i|]Sy=DH6qu$$umLW3U4/|lJ}2 V(0S-@B;pM>e+"
-      WORDPRESS_LOGGED_IN_KEY: "!-S`cx8,$$9lic%mP+nR>z7o{(Wk-gMzDi@@@w8X1Yx_72jm@$$=FJ=bRc[3PjVr|&"
-      WORDPRESS_NONCE_KEY: "761$${1~=bR;3giB-NVHjr_`EQ.$$H;b*ha;+~2ajI,p#4GB!~u|P]m|sVIwRT+-.^"
-      WORDPRESS_AUTH_SALT: "TtZ@=2DL++YPwb@g#;1a=+*MdX>c#I{W:%](laX@T-+bl:3#@lM$$MpRLU(h+z8/J"
-      WORDPRESS_SECURE_AUTH_SALT: "|z<6YT0&Qh+QIhJa<#f%|1$$?|bzkeN*6kAYvD#N&%5 -+eK>rEI7oM%8-aeO&pqx"
-      WORDPRESS_LOGGED_IN_SALT: "*%-]~YqK}ys-}fB+KMl@RzE9`!%~8Om#fV;K~-p.&0NFIw7tIlGR|3y:19|qr*Ys"
-      WORDPRESS_NONCE_SAL: "?);P<DBe-v%>(ziE~Z|}X|Zyj6g$$.Qok ?#|Kl001)uM<Z0V4/,7?NC:_P$$a-?KW"
-
-      WORDPRESS_CONFIG_EXTRA: |
-        define( 'WP_ALLOW_MULTISITE', true );
-
-        /* after installing the multisite */
-        define( 'MULTISITE', true );
-        define( 'SUBDOMAIN_INSTALL', false );
-        define( 'DOMAIN_CURRENT_SITE', 'localhost' );
-        define( 'PATH_CURRENT_SITE', '/' );
-        define( 'SITE_ID_CURRENT_SITE', 1 );
-        define( 'BLOG_ID_CURRENT_SITE', 1 );
-
-        define( 'WP_ENVIRONMENT_TYPE', 'local' );
-
-        define( 'WP_CACHE_KEY_SALT', '<nE#nbi*A80^N{Ny7+_M47Sf]eGnq~%CNYwcD-uy?iQ1u?$$X+|)P~I~|idww#}%*');
+    env_file:
+      - .docker.env
     volumes:
       - ./unit.config.json:/docker-entrypoint.d/config.json
     ports:
@@ -47,36 +18,8 @@ services:
       - db
     ports:
       - 80:80
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wp-tester
-      WORDPRESS_DB_PASSWORD: supersecret
-      WORDPRESS_DB_NAME: ms_subfolder
-      WP_DEBUG: true
-
-      WORDPRESS_AUTH_KEY:         '=2p`pO7IF9$$O e,0M2o|W#6A|nYrnCLOLvW_2R_&p{Jpj2e9uV|M-L14%K+Z2bS#'
-      WORDPRESS_SECURE_AUTH_KEY:  '5gN||Sv-`*7B,ZCc#5F&+tVZhLK -#~RLzwKbUH>4gp^H02@f7FO2~XjydFx*(bC'
-      WORDPRESS_LOGGED_IN_KEY:    '|jxEH+8nC`ESk4Z#a^aR<|zLq~y PRy`XAS.vMwOXn/e{/q#B0>oP5Isw/zPU_+h'
-      WORDPRESS_NONCE_KEY:        '*KHo)]j0*|o9#a[5Af++]^s%i.fVHMNQ&#>#p.g}86IWW~9*g/TAKoUvYLC0Z<(3'
-      WORDPRESS_AUTH_SALT:        'vteSSZwL9nDpbnHWH&1GHHz?N]O }25Q)]@Si|olj.Fo-Ut|87v|3^>BA#^,l#rZ'
-      WORDPRESS_SECURE_AUTH_SALT: '1tv-%pN-E@eCm{L`{N{v?sZ2(0xmPh@0VY]3B+7,@H|m+W}?$$?+/-LV&!aTKsasC'
-      WORDPRESS_LOGGED_IN_SALT:   'v{3UsR9b%#^H+_}SC*BI1juvML%EQVk|mhoSL9fGDI1 iJC@[QuUtS8N$$Q#TJ6u]'
-      WORDPRESS_NONCE_SALT:       'Pk:5yJ{u@YdJN-[9^)u>QT=0nLzJY9Pz)QD!.0:^P47y|{k.5=4++L^rAUIHrCBr'
-
-      WORDPRESS_CONFIG_EXTRA: |
-        define( 'WP_ALLOW_MULTISITE', true );
-
-        /* after installing the multisite */
-        define( 'MULTISITE', true );
-        define( 'SUBDOMAIN_INSTALL', false );
-        define( 'DOMAIN_CURRENT_SITE', 'localhost' );
-        define( 'PATH_CURRENT_SITE', '/' );
-        define( 'SITE_ID_CURRENT_SITE', 1 );
-        define( 'BLOG_ID_CURRENT_SITE', 1 ); 
-
-        define( 'WP_ENVIRONMENT_TYPE', 'local' );
-
-        define( 'WP_CACHE_KEY_SALT', 'xW-gtI&Y;:,ggy>NP4fwj-7|{VKu:M`>%7_ch~Z8D0^z<o5YpP)D$$G?W0Q ;npC_');
+    env_file:
+      - .docker.env
     volumes:
       - ./wp:/var/www/html
     networks:
@@ -98,36 +41,8 @@ services:
     image: wordpress:6.5-php8.3-fpm-alpine
     depends_on:
       - db
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wp-tester
-      WORDPRESS_DB_PASSWORD: supersecret
-      WORDPRESS_DB_NAME: ms_subfolder
-      WP_DEBUG: true
-
-      WORDPRESS_AUTH_KEY:         '=2p`pO7IF9$$O e,0M2o|W#6A|nYrnCLOLvW_2R_&p{Jpj2e9uV|M-L14%K+Z2bS#'
-      WORDPRESS_SECURE_AUTH_KEY:  '5gN||Sv-`*7B,ZCc#5F&+tVZhLK -#~RLzwKbUH>4gp^H02@f7FO2~XjydFx*(bC'
-      WORDPRESS_LOGGED_IN_KEY:    '|jxEH+8nC`ESk4Z#a^aR<|zLq~y PRy`XAS.vMwOXn/e{/q#B0>oP5Isw/zPU_+h'
-      WORDPRESS_NONCE_KEY:        '*KHo)]j0*|o9#a[5Af++]^s%i.fVHMNQ&#>#p.g}86IWW~9*g/TAKoUvYLC0Z<(3'
-      WORDPRESS_AUTH_SALT:        'vteSSZwL9nDpbnHWH&1GHHz?N]O }25Q)]@Si|olj.Fo-Ut|87v|3^>BA#^,l#rZ'
-      WORDPRESS_SECURE_AUTH_SALT: '1tv-%pN-E@eCm{L`{N{v?sZ2(0xmPh@0VY]3B+7,@H|m+W}?$$?+/-LV&!aTKsasC'
-      WORDPRESS_LOGGED_IN_SALT:   'v{3UsR9b%#^H+_}SC*BI1juvML%EQVk|mhoSL9fGDI1 iJC@[QuUtS8N$$Q#TJ6u]'
-      WORDPRESS_NONCE_SALT:       'Pk:5yJ{u@YdJN-[9^)u>QT=0nLzJY9Pz)QD!.0:^P47y|{k.5=4++L^rAUIHrCBr'
-
-      WORDPRESS_CONFIG_EXTRA: |
-        define( 'WP_ALLOW_MULTISITE', true );
-
-        /* after installing the multisite */
-        define( 'MULTISITE', true );
-        define( 'SUBDOMAIN_INSTALL', false );
-        define( 'DOMAIN_CURRENT_SITE', 'localhost' );
-        define( 'PATH_CURRENT_SITE', '/' );
-        define( 'SITE_ID_CURRENT_SITE', 1 );
-        define( 'BLOG_ID_CURRENT_SITE', 1 ); 
-
-        define( 'WP_ENVIRONMENT_TYPE', 'local' );
-
-        define( 'WP_CACHE_KEY_SALT', 'xW-gtI&Y;:,ggy>NP4fwj-7|{VKu:M`>%7_ch~Z8D0^z<o5YpP)D$$G?W0Q ;npC_');
+    env_file:
+      - .docker.env
     volumes:
       - wordpress:/var/www/html
     networks:
