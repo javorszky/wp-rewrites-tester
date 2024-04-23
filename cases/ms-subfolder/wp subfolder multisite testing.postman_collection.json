@@ -1048,10 +1048,10 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"const blog_title = 'Add a New Post';",
+							"const element = '<h1 class=\"screen-reader-text hide-if-no-js\">Add a New Post</h1>';",
 							"",
-							"pm.test(\"Posts page lists blog post\", function () {",
-							"    pm.expect(pm.response.text()).to.include(blog_title);",
+							"pm.test(\"New post page has no-js add new post h1\", function () {",
+							"    pm.expect(pm.response.text()).to.include(element);",
 							"});"
 						],
 						"type": "text/javascript",
