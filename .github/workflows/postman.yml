@@ -20,5 +20,8 @@ jobs:
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
       - name: Launching WordPress ${{ matrix.wp_type }} with ${{ matrix.server }}
         run: make up-${{ matrix.wp_type }}-${{ matrix.server }}
-      - name: Running postman tests
-        run: make test-${{ matrix.wp_type }}
+      - name: Wait 10 sec
+        run: sleep 10
+      - name: Run API tests
+        run: |
+          postman collection run "29560241-63b13e7d-21eb-4f68-ae31-40959a9a8d3e"
