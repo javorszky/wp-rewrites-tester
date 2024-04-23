@@ -1,9 +1,9 @@
 .PHONY: test-ms-subfolder up-ms-subfolder-unit up-ms-subfolder-apache
 
-include ./docker/makefile
+include ./docker/make.mk
 
 build-unit-ms-subfolder:
-	${MAKE} -f make.mk -C docker build
+	${MAKE} -C docker -f make.mk build
 
 test-ms-subfolder:
 	newman run cases/ms-subfolder/wp\ subfolder\ multisite\ testing.postman_collection.json
