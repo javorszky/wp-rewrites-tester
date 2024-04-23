@@ -6,7 +6,7 @@ jobs:
   test-wp:
     runs-on: ubuntu-latest
     name: Testing WordPress
-    concurrency: ${{ matrix.wp_type }}-${{ matrix.server }}
+    concurrency: run-only-one
     strategy:
       matrix:
         wp_type: [ms-subfolder]
