@@ -6,8 +6,8 @@ jobs:
   test-wp:
     runs-on: ubuntu-latest
     name: Testing WordPress
-    concurrency: run-only-one
     strategy:
+      fail-fast: false
       matrix:
         wp_type: [ms-subfolder]
         server: [apache, nginx, unit]
