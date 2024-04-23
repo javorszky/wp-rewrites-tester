@@ -43,7 +43,7 @@ RUN docker-php-ext-install bcmath
 
 WORKDIR /wpms/
 
-COPY --from=wordpress:6.4-apache /usr/src/wordpress /wpms/
+COPY --from=wordpress:6.5-apache /usr/src/wordpress /wpms/
 
 RUN mv wp-config-docker.php wp-config.php
 
