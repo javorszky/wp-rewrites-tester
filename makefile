@@ -3,7 +3,7 @@
 include ./docker/makefile
 
 build-unit-ms-subfolder:
-	${MAKE} -C docker build
+	${MAKE} -f make.mk -C docker build
 
 test-ms-subfolder:
 	newman run cases/ms-subfolder/wp\ subfolder\ multisite\ testing.postman_collection.json
