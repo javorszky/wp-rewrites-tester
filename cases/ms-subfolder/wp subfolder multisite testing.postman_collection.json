@@ -782,12 +782,12 @@
 					"formdata": [
 						{
 							"key": "log",
-							"value": "drfreeman",
+							"value": "{{username}}",
 							"type": "text"
 						},
 						{
 							"key": "pwd",
-							"value": "blackmesa24",
+							"value": "{{password}}",
 							"type": "text"
 						},
 						{
@@ -1284,13 +1284,13 @@
 					"type": "basic",
 					"basic": [
 						{
-							"key": "password",
-							"value": "{{applicationPassword}}",
+							"key": "username",
+							"value": "{{username}}",
 							"type": "string"
 						},
 						{
-							"key": "username",
-							"value": "drfreeman",
+							"key": "password",
+							"value": "{{applicationPassword}}",
 							"type": "string"
 						}
 					]
@@ -1369,13 +1369,13 @@
 					"type": "basic",
 					"basic": [
 						{
-							"key": "password",
-							"value": "{{applicationPassword}}",
+							"key": "username",
+							"value": "{{username}}",
 							"type": "string"
 						},
 						{
-							"key": "username",
-							"value": "drfreeman",
+							"key": "password",
+							"value": "{{applicationPassword}}",
 							"type": "string"
 						}
 					]
@@ -1448,13 +1448,13 @@
 					"type": "basic",
 					"basic": [
 						{
-							"key": "password",
-							"value": "{{applicationPassword}}",
+							"key": "username",
+							"value": "{{username}}",
 							"type": "string"
 						},
 						{
-							"key": "username",
-							"value": "drfreeman",
+							"key": "password",
+							"value": "{{applicationPassword}}",
 							"type": "string"
 						}
 					]
@@ -1538,6 +1538,16 @@
 		{
 			"key": "postID",
 			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "drfreeman",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "blackmesa24",
 			"type": "string"
 		}
 	]
