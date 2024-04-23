@@ -6,7 +6,7 @@ services:
     env_file:
       - .docker.env
     volumes:
-      - ./unit.config.json:/docker-entrypoint.d/config.json
+      - ./unit-conf/unit.config.json:/docker-entrypoint.d/config.json
     ports:
       - "80:80"
     networks:
@@ -21,7 +21,7 @@ services:
     env_file:
       - .docker.env
     volumes:
-      - ./wp:/var/www/html
+      - ./apache-conf/.htaccess:/var/www/html/.htaccess
     networks:
       - tester-ms-subfolder
 
