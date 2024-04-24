@@ -2,14 +2,14 @@
 
 include ./docker/make.mk
 
-build-unit-ms-subfolder:
+build-ms-subfolder-unit:
 	${MAKE} -C docker -f make.mk build
 
 test-ms-subfolder:
 	newman run cases/ms-subfolder/wp\ subfolder\ multisite\ testing.postman_collection.json
 
-up-ms-subfolder-unit: build-unit-ms-subfolder
-	docker compose -f cases/ms-subfolder/docker-compose.yaml up -d unit --build
+up-ms-subfolder-unit:
+	docker compose -f cases/ms-subfolder/docker-compose.yaml up unit
 
 up-ms-subfolder-apache:
 	docker compose -f cases/ms-subfolder/docker-compose.yaml up -d apache --build
