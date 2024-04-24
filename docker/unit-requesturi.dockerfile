@@ -15,11 +15,13 @@ RUN set -ex \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -y ca-certificates git build-essential libssl-dev libpcre2-dev curl pkg-config
 
-RUN mkdir -p /usr/lib/unit/modules /usr/lib/unit/debug-modules \
-    && NCPU="$(getconf _NPROCESSORS_ONLN)" \
+RUN mkdir -p /usr/lib/unit/modules /usr/lib/unit/debug-modules
+
+RUN NCPU="$(getconf _NPROCESSORS_ONLN)" \
     && DEB_HOST_MULTIARCH="$(dpkg-architecture -q DEB_HOST_MULTIARCH)" \
-    && CC_OPT="$(DEB_BUILD_MAINT_OPTIONS="hardening=+all,-pie" DEB_CFLAGS_MAINT_APPEND="-Wp,-D_FORTIFY_SOURCE=2 -fPIC" dpkg-buildflags --get CFLAGS)" \
-    && LD_OPT="$(DEB_BUILD_MAINT_OPTIONS="hardening=+all,-pie" DEB_LDFLAGS_MAINT_APPEND="-Wl,--as-needed -pie" dpkg-buildflags --get LDFLAGS)" \
+    && CC_OPT="$(DEB_BUILD_MAINT_OPTIONS="hardening=+all,-pie" DEB_CFLAGS_MAINT_APPEND="-Wp,-D_FORTIFY_SOURCE=2 -fPIC" dpkg-buildflags --get CFLAGS)"
+
+RUN LD_OPT="$(DEB_BUILD_MAINT_OPTIONS="hardening=+all,-pie" DEB_LDFLAGS_MAINT_APPEND="-Wl,--as-needed -pie" dpkg-buildflags --get LDFLAGS)" \
     && CONFIGURE_ARGS_MODULES="--prefix=/usr \
                 --statedir=/var/lib/unit \
                 --control=unix:/var/run/control.unit.sock \
@@ -31,8 +33,9 @@ RUN mkdir -p /usr/lib/unit/modules /usr/lib/unit/debug-modules \
                 --user=unit \
                 --group=unit \
                 --openssl \
-                --libdir=/usr/lib/$DEB_HOST_MULTIARCH" \
-    && CONFIGURE_ARGS="$CONFIGURE_ARGS_MODULES \
+                --libdir=/usr/lib/$DEB_HOST_MULTIARCH"
+
+RUN CONFIGURE_ARGS="$CONFIGURE_ARGS_MODULES \
                 --njs"
 
 RUN make -j $NCPU -C pkg/contrib .njs
