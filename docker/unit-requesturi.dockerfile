@@ -12,10 +12,10 @@ WORKDIR /usr/src/unit/unit
 COPY unit/ .
 
 RUN set -ex \
-    && savedAptMark="$(apt-mark showmanual)" \
     && apt-get update \
-    && apt-get install --no-install-recommends --no-install-suggests -y ca-certificates git build-essential libssl-dev libpcre2-dev curl pkg-config \
-    && mkdir -p /usr/lib/unit/modules /usr/lib/unit/debug-modules \
+    && apt-get install --no-install-recommends --no-install-suggests -y ca-certificates git build-essential libssl-dev libpcre2-dev curl pkg-config
+
+RUN mkdir -p /usr/lib/unit/modules /usr/lib/unit/debug-modules \
     && NCPU="$(getconf _NPROCESSORS_ONLN)" \
     && DEB_HOST_MULTIARCH="$(dpkg-architecture -q DEB_HOST_MULTIARCH)" \
     && CC_OPT="$(DEB_BUILD_MAINT_OPTIONS="hardening=+all,-pie" DEB_CFLAGS_MAINT_APPEND="-Wp,-D_FORTIFY_SOURCE=2 -fPIC" dpkg-buildflags --get CFLAGS)" \
@@ -33,36 +33,41 @@ RUN set -ex \
                 --openssl \
                 --libdir=/usr/lib/$DEB_HOST_MULTIARCH" \
     && CONFIGURE_ARGS="$CONFIGURE_ARGS_MODULES \
-                --njs" \
-    && make -j $NCPU -C pkg/contrib .njs \
-    && export PKG_CONFIG_PATH=$(pwd)/pkg/contrib/njs/build \
-    && ./configure $CONFIGURE_ARGS --cc-opt="$CC_OPT" --ld-opt="$LD_OPT" --modulesdir=/usr/lib/unit/debug-modules --debug \
-    && make -j $NCPU unitd \
-    && install -pm755 build/sbin/unitd /usr/sbin/unitd-debug \
-    && make clean \
-    && ./configure $CONFIGURE_ARGS --cc-opt="$CC_OPT" --ld-opt="$LD_OPT" --modulesdir=/usr/lib/unit/modules \
-    && make -j $NCPU unitd \
-    && install -pm755 build/sbin/unitd /usr/sbin/unitd \
-    && make clean \
-    && /bin/true \
-    && ./configure $CONFIGURE_ARGS_MODULES --cc-opt="$CC_OPT" --modulesdir=/usr/lib/unit/debug-modules --debug \
-    && ./configure php \
-    && make -j $NCPU php-install \
-    && make clean \
-    && ./configure $CONFIGURE_ARGS_MODULES --cc-opt="$CC_OPT" --modulesdir=/usr/lib/unit/modules \
-    && ./configure php \
-    && make -j $NCPU php-install \
-    && cd \
+                --njs"
+
+RUN make -j $NCPU -C pkg/contrib .njs
+RUN export PKG_CONFIG_PATH=$(pwd)/pkg/contrib/njs/build
+RUN ./configure $CONFIGURE_ARGS --cc-opt="$CC_OPT" --ld-opt="$LD_OPT" --modulesdir=/usr/lib/unit/debug-modules --debug
+RUN make -j $NCPU unitd
+RUN install -pm755 build/sbin/unitd /usr/sbin/unitd-debug
+RUN make clean
+RUN ./configure $CONFIGURE_ARGS --cc-opt="$CC_OPT" --ld-opt="$LD_OPT" --modulesdir=/usr/lib/unit/modules
+RUN make -j $NCPU unitd
+RUN install -pm755 build/sbin/unitd /usr/sbin/unitd
+RUN make clean \
+    && /bin/true
+RUN ./configure $CONFIGURE_ARGS_MODULES --cc-opt="$CC_OPT" --modulesdir=/usr/lib/unit/debug-modules --debug
+RUN ./configure php
+RUN make -j $NCPU php-install
+RUN make clean
+RUN ./configure $CONFIGURE_ARGS_MODULES --cc-opt="$CC_OPT" --modulesdir=/usr/lib/unit/modules
+RUN ./configure php
+RUN make -j $NCPU php-install
+RUN cd \
     && rm -rf /usr/src/unit \
     && for f in /usr/sbin/unitd /usr/lib/unit/modules/*.unit.so; do \
         ldd $f | awk '/=>/{print $(NF-1)}' | while read n; do dpkg-query -S $n; done | sed 's/^\([^:]\+\):.*$/\1/' | sort | uniq >> /requirements.apt; \
-       done \
+       done
+
+RUN savedAptMark="$(apt-mark showmanual)" \
     && apt-mark showmanual | xargs apt-mark auto > /dev/null \
     && { [ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; } \
-    && ldconfig \
-    && mkdir -p /var/lib/unit/ \
-    && mkdir -p /docker-entrypoint.d/ \
-    && groupadd --gid 999 unit \
+    && ldconfig
+
+RUN mkdir -p /var/lib/unit/ \
+    && mkdir -p /docker-entrypoint.d/
+
+RUN groupadd --gid 999 unit \
     && useradd \
          --uid 999 \
          --gid unit \
@@ -70,11 +75,13 @@ RUN set -ex \
          --home /nonexistent \
          --comment "unit user" \
          --shell /bin/false \
-         unit \
-    && apt-get update \
+         unit
+
+RUN apt-get update \
     && apt-get --no-install-recommends --no-install-suggests -y install curl $(cat /requirements.apt) \
-    && apt-get purge -y --auto-remove build-essential \
-    && rm -rf /var/lib/apt/lists/* \
+    && apt-get purge -y --auto-remove build-essential
+
+RUN rm -rf /var/lib/apt/lists/* \
     && rm -f /requirements.apt \
     && ln -sf /dev/stderr /var/log/unit.log
 
