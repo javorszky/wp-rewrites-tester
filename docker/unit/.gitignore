@@ -1,4 +1,3 @@
 /build/
-Makefile
 *.pyc
 __pycache__/
