@@ -8,7 +8,7 @@ build-ms-subfolder-unit:
 test-ms-subfolder:
 	newman run cases/ms-subfolder/wp\ subfolder\ multisite\ testing.postman_collection.json
 
-up-ms-subfolder-unit:
+up-ms-subfolder-unit: build-ms-subfolder-unit
 	docker compose -f cases/ms-subfolder/docker-compose.yaml up -d unit
 
 up-ms-subfolder-apache:
