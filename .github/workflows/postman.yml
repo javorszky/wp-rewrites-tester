@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         wp_type: [ms-subfolder]
-        server: [apache, nginx]
+        server: [apache, nginx, unit]
     steps:
       - uses: actions/checkout@v4
       - name: Install Postman CLI
@@ -20,32 +20,8 @@ jobs:
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
       - name: Launching WordPress ${{ matrix.wp_type }} with ${{ matrix.server }}
         run: make up-${{ matrix.wp_type }}-${{ matrix.server }}
-      - name: Wait 20 sec
-        run: sleep 20
-      - name: Run API tests
-        run: |
-          postman collection run "29560241-63b13e7d-21eb-4f68-ae31-40959a9a8d3e"
-  test-wp-on-unit:
-    runs-on: ubuntu-latest
-    name: Testing WordPress on Unit
-    strategy:
-      fail-fast: false
-      matrix:
-        wp_type: [ms-subfolder]
-        server: [unit]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-      - name: Building WordPress image ${{ matrix.wp_type }} with ${{ matrix.server }}
-        run: make build-${{ matrix.wp_type }}-${{ matrix.server }}
-      - name: Launching WordPress ${{ matrix.wp_type }} with ${{ matrix.server }}
-        run: make up-${{ matrix.wp_type }}-${{ matrix.server }}
-      - name: Wait 20 sec
-        run: sleep 20
+      - name: Wait 10 sec
+        run: sleep 10
       - name: Run API tests
         run: |
           postman collection run "29560241-63b13e7d-21eb-4f68-ae31-40959a9a8d3e"
